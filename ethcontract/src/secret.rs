@@ -99,6 +99,10 @@ impl Key for &'_ PrivateKey {
         Ok(Signature { v, r, s })
     }
 
+    fn sign_message(&self, message: &[u8]) -> Result<Signature, SigningError> {
+        todo!()
+    }
+
     fn address(&self) -> Address {
         self.public_address()
     }

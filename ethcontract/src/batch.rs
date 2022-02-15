@@ -8,6 +8,7 @@ use web3::{
     types::{BlockId, BlockNumber, Bytes, CallRequest},
     BatchTransport as Web3BatchTransport,
 };
+use web3::error::TransportError;
 
 /// Struct allowing to batch multiple calls into a single Node request
 pub struct CallBatch<T: Web3BatchTransport> {
@@ -43,7 +44,7 @@ impl<T: Web3BatchTransport> CallBatch<T> {
         async move {
             rx.await.unwrap_or_else(|_| {
                 Err(Web3Error::Transport(
-                    "Batch has been dropped without executing".to_owned(),
+                    TransportError::Message("Batch has been dropped without executing".to_owned()),
                 ))
             })
         }
@@ -80,10 +81,10 @@ impl<T: Web3BatchTransport> CallBatch<T> {
                             .clone()
                             .and_then(helpers::decode),
                     ),
-                    Err(err) => sender.send(Err(Web3Error::Transport(format!(
+                    Err(err) => sender.send(Err(Web3Error::Transport(TransportError::Message(format!(
                         "Batch failed with: {}",
                         err
-                    )))),
+                    ))))),
                 };
             }
         }

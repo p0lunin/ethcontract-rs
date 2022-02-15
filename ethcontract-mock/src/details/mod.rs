@@ -630,12 +630,12 @@ impl MockTransport {
 
         let receipt = TransactionReceipt {
             transaction_hash: tx.hash,
-            transaction_index: U64::from(0),
+            transaction_index: U64::from(0_u64),
             block_hash: None,
             block_number: Some(U64::from(state.block)),
             from: tx.from,
             to: Some(tx.to),
-            cumulative_gas_used: U256::from(1),
+            cumulative_gas_used: U256::from(1_u64),
             gas_used: None,
             contract_address: None,
             logs: vec![],
@@ -643,6 +643,7 @@ impl MockTransport {
             root: None,
             logs_bloom: Default::default(),
             transaction_type: None,
+            effective_gas_price: None
         };
 
         state.receipts.insert(tx.hash, receipt);
